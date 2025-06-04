@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Vignesh’s tasks</h1>
+
+<!-- Add Task Form -->
+<form method="POST" action="/add" class="card task-form">
+    <input type="text" name="title" placeholder="Task name" required>
+    <select name="category">
+        <option value="Groceries">Groceries</option>
+        <option value="Cleaning">Cleaning</option>
+        <option value="Work">Work</option>
+        <option value="Learning">Learning</option>
+    </select>
+    <button type="submit">Add Task</button>
+</form>
+
+<!-- Category-Based Task Display -->
+<div class="category-grid">
+    {% for category in ["Groceries", "Cleaning", "Work", "Learning"] %}
+    <div class="category-card">
+        <h3>{{ category }}</h3>
+        <ul class="task-list">
+            {% for task in tasks %}
+                {% if task[2] == category %}
+                <li>
+                    <div class="task-item">
+                        <a href="/toggle/{{ task[0] }}" class="task-checkbox-link" title="Toggle Complete">
+                            <input type="checkbox" {% if task[3] %}checked{% endif %}>
+                        </a>
+                        <span class="task-title">{{ task[1] }}</span>
+                        <a href="/delete/{{ task[0] }}" class="tiny-delete" title="Delete Task">🗑️</a>
+                    </div>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
